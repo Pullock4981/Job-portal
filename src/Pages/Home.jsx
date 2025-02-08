@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Banner from "../Components/Banner";
 import Card from "../Components/Card";
 import Jobs from "./Jobs";
+import Sidebar from "../sidebar/Sidebar";
 
 
 const Home = () => {
@@ -10,14 +11,21 @@ const Home = () => {
     const [selectCategory, setSelectCategory] = useState(null);
     // job selection
     const [jobs, setJobs] = useState([]);
+    // loading state
+    const [isLoading, setIsLoading] = useState(true);
+    // pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
 
     // data fetch
     useEffect(() => {
+        setIsLoading(true);
         fetch("jobs.json")
             .then(res => res.json())
             .then(data => {
                 // console.log(data)
                 setJobs(data)
+                setIsLoading(false)
             })
     }, [])
     
@@ -74,12 +82,21 @@ const Home = () => {
 
             {/* main section */}
             <div className="md:grid grid-cols-4 gap-8 mt-10 p-10 bg-[#FAFAFA] xl:px-24 px-4">
+                {/* left side */}
                 <div className=" bg-white p-4 rounded">
-                    left
+                    <Sidebar handleChange={handleChange} handleClick={handleClick}></Sidebar>
                 </div>
+                {/* job cart */}
                 <div className="col-span-2 md:p-4 py-4 bg-white rounded">
-                    <Jobs result = {result}></Jobs>
+                    {
+                        isLoading ? (<p>Loading...</p>) : result.length > 0 ? (<Jobs result={result}></Jobs>) : <>
+                            <h3 className="text-lg font-bold">{result.length} Jobs</h3>
+                            <p>No data found!</p>
+                        </>
+                    }
+                    
                 </div>
+                {/* right side */}
                 <div className=" bg-white p-4 rounded">
                     right
                 </div>
