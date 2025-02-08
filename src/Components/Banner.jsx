@@ -10,7 +10,7 @@ const Banner = ({query, handleInputChange}) => {
             </p>
 
             <form>
-                <div className="flex">
+                <div className="flex md:flex-row flex-col gap-4 md:gap-0">
                     <div className="w-full">
                         <input type="text" name="title" id="title" placeholder="search for job here"
                             className="border rounded-sm md:rounded-lg py-2 px-3 w-full"
